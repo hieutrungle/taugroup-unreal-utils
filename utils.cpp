@@ -1,8 +1,10 @@
 #include "utils.hpp"
 
+// glm::vec3 is a vector of 3 floats, glm::vec3(1.0f, 2.0f, 3.0f) is a vector of (1.0f, 2.0f, 3.0f)
+// glm is similar to struct { float x, y, z; } but with more features and added functionalities
 
-float calc_reflection_coefficient(const glm::vec3& trace_start, const glm::vec3& hit_location, const glm::vec3& normal, const float& eta1, const float& eta2, const std::string& polar) {
-    glm::vec3 incident_dir = glm::normalize(hit_location - trace_start);
+float calc_reflection_coefficient(const glm::vec3& start_pos, const glm::vec3& end_pos, const glm::vec3& normal, const float& eta1, const float& eta2, const std::string& polar) {
+    glm::vec3 incident_dir = glm::normalize(end_pos - start_pos);
     glm::vec3 reflected_dir{ glm::normalize(glm::reflect(incident_dir, normal)) };
     float cos_2theta1 = glm::dot(-incident_dir, reflected_dir);
     float incident_angle = std::acos(cos_2theta1) / 2;
@@ -36,9 +38,9 @@ float calc_reflection_coefficient(const float& incident_angle, const float& eta1
 }
 
 
-float calc_friss_strength(const glm::vec3& trace_start, const glm::vec3& trace_end, float frequency, float tx_power, float tx_gain, float rx_gain, float ref_coef, float scale) {
+float calc_friss_strength(const glm::vec3& start_pos, const glm::vec3& end_pos, float frequency, float tx_power, float tx_gain, float rx_gain, float ref_coef, float scale) {
     float lambda = LIGHT_SPEED / frequency;
-    float dist = glm::distance(trace_start, trace_end) * scale;
+    float dist = glm::distance(start_pos, end_pos) * scale;
     float path_loss_inv{};
     if (dist <= 1.0f) { path_loss_inv = 1.0f; }
     else { path_loss_inv = std::pow(lambda / (4 * Constant::PI * dist), 2); }
