@@ -3,6 +3,23 @@
 // glm::vec3 is a vector of 3 floats, glm::vec3(1.0f, 2.0f, 3.0f) is a vector of (1.0f, 2.0f, 3.0f)
 // glm is similar to struct { float x, y, z; } but with more features and added functionalities
 
+glm::vec3 normalize(const glm::vec3& vec) {
+    float scale = 1 / std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+    return glm::vec3(vec.x * scale, vec.y * scale, vec.z * scale);
+}
+
+float distance(const glm::vec3& start_pos, const glm::vec3& end_pos) {
+    return std::sqrt(std::pow(start_pos.x - end_pos.x, 2) + std::pow(start_pos.y - end_pos.y, 2) + std::pow(start_pos.z - end_pos.z, 2));
+}
+
+float dot(const glm::vec3& vec1, const glm::vec3& vec2) {
+    return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
+}
+
+glm::vec3 reflect(const glm::vec3& incident_dir, const glm::vec3& normal) {
+    return normalize(incident_dir - 2.0 * dot(incident_dir, normal) * normal);
+}
+
 float calc_reflection_coefficient(const glm::vec3& start_pos, const glm::vec3& end_pos, const glm::vec3& normal, const float& eta1, const float& eta2, const std::string& polar) {
     glm::vec3 incident_dir = glm::normalize(end_pos - start_pos);
     glm::vec3 reflected_dir{ glm::normalize(glm::reflect(incident_dir, normal)) };
