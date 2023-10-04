@@ -7,10 +7,10 @@
 
 inline const float LIGHT_SPEED = 299792458.0;
 
-float normalize(const glm::vec3& vec);
+glm::vec3 normalize(const glm::vec3& vec);
 float distance(const glm::vec3& start_pos, const glm::vec3& end_pos);
 float dot(const glm::vec3& vec1, const glm::vec3& vec2);
-float reflect(const glm::vec3& incident_dir, const glm::vec3& normal);
+glm::vec3 reflect(const glm::vec3& incident_dir, const glm::vec3& normal);
 
 /// @brief Calculate the reflection coefficient of a ray hitting a surface
 /// @param start_pos a point (x, y, z) where the ray starts
